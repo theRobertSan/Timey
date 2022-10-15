@@ -1,7 +1,10 @@
 import mongoose from "mongoose";
 
 const courseSchema = mongoose.Schema({
-	name: String,
+	name: {
+		type: String,
+		required: true,
+	},
 });
 
 const Course = mongoose.model("Course", courseSchema);

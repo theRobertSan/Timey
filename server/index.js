@@ -5,6 +5,7 @@ import dotenv from "dotenv";
 import cors from "cors";
 
 import projectRoutes from "./routes/projects.js";
+import courseRoutes from "./routes/courses.js";
 
 const app = express();
 app.use(bodyParser.json());
@@ -17,6 +18,7 @@ const PORT = process.env.PORT || 5000;
 const CONNECTION_URL = process.env.MONGO_URL;
 
 app.use("/projects", projectRoutes);
+app.use("/courses", courseRoutes);
 
 // Connect to mongoDB
 mongoose
