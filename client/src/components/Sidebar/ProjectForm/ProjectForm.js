@@ -12,6 +12,7 @@ import {
 	InputLabel,
 	FormControl,
 	Slide,
+	Typography,
 } from "@mui/material";
 import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
 import { TimePicker } from "@mui/x-date-pickers/TimePicker";
@@ -23,6 +24,7 @@ import { useDispatch } from "react-redux";
 import Importance from "./Importance/Importance";
 
 import { createProject } from "../../../actions/projects";
+import CourseSelector from "./CourseSelector/CourseSelector";
 
 const initialProjectData = {
 	name: "",
@@ -44,12 +46,16 @@ const ProjectForm = () => {
 	// Controll the opening of the dialog box
 	const [open, setOpen] = useState(false);
 
+	// Controll importance label
+	const [hover, setHover] = useState(2);
+
 	const handleClickOpen = () => {
 		setOpen(true);
 	};
 
 	const handleClose = () => {
 		setOpen(false);
+		setHover(2);
 		// Clean project data
 		setProjectData(initialProjectData);
 	};
@@ -57,6 +63,7 @@ const ProjectForm = () => {
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 		setOpen(false);
+		setHover(2);
 
 		dispatch(createProject(projectData));
 
@@ -76,84 +83,79 @@ const ProjectForm = () => {
 				keepMounted
 				aria-describedby="alert-dialog-slide-description"
 			>
-				<DialogTitle>Create Project</DialogTitle>
-				<form autoComplete="off" noValidate onSubmit={handleSubmit}>
+				<DialogTitle variant="h5">
+					<Typography variant="inherit" align="center">
+						Create Project
+					</Typography>
+				</DialogTitle>
+				<form autoComplete="off" onSubmit={handleSubmit}>
 					<DialogContent>
-						<Stack spacing={1}>
-							{/* Name */}
-							<TextField
-								autoFocus
-								margin="dense"
-								fullWidth
-								required
-								label="Name"
-								name="name"
-								value={projectData.name}
-								onChange={(e) =>
-									setProjectData({ ...projectData, name: e.target.value })
-								}
-							/>
-
-							{/* Description */}
-							<TextField
-								margin="dense"
-								fullWidth
-								label="Description"
-								name="description"
-								value={projectData.description}
-								onChange={(e) =>
-									setProjectData({
-										...projectData,
-										description: e.target.value,
-									})
-								}
-							/>
-
-							{/* Course Selection */}
-							<TextField
-								select
-								margin="dense"
-								label="RelatedCourse"
-								name="relatedCourse"
-								value={projectData.course}
-								onChange={(e) =>
-									setProjectData({ ...projectData, course: e.target.value })
-								}
-							>
-								<MenuItem value={"634b153e68ff66ff49987b5e"}>Course 1</MenuItem>
-								<MenuItem value={"634b153e68ff66ff49987b5e"}>Course 2</MenuItem>
-							</TextField>
-
-							{/* Date & Hour Selection */}
-							<LocalizationProvider dateAdapter={AdapterMoment}>
-								<DesktopDatePicker
+						<LocalizationProvider dateAdapter={AdapterMoment}>
+							<Stack spacing={2}>
+								{/* Name */}
+								<TextField
+									autoFocus
+									fullWidth
 									required
+									label="Name"
+									name="name"
+									value={projectData.name}
+									onChange={(e) =>
+										setProjectData({ ...projectData, name: e.target.value })
+									}
+								/>
+
+								{/* Description */}
+								<TextField
+									fullWidth
+									label="Description"
+									name="description"
+									value={projectData.description}
+									onChange={(e) =>
+										setProjectData({
+											...projectData,
+											description: e.target.value,
+										})
+									}
+								/>
+
+								{/* Course Selection */}
+								<CourseSelector
+									projectData={projectData}
+									setProjectData={setProjectData}
+								/>
+
+								{/* Date Selection */}
+								<DesktopDatePicker
 									label="Due Date"
 									inputFormat="DD/MM/YYYY"
-									value={projectData.dueDate}
+									value={projectData.dueDate || null}
 									onChange={(newDate) => {
 										setProjectData({ ...projectData, dueDate: newDate._d });
 									}}
-									renderInput={(params) => <TextField {...params} />}
+									renderInput={(params) => <TextField required {...params} />}
 								/>
 
+								{/* Time Selection */}
 								<TimePicker
 									label="Due Time"
-									value={projectData.dueTime}
+									value={projectData.dueTime || null}
 									onChange={(newTime) => {
 										setProjectData({ ...projectData, dueTime: newTime });
 										console.log(newTime._d);
 									}}
 									renderInput={(params) => <TextField {...params} />}
 								/>
-							</LocalizationProvider>
 
-							{/* Importance Selection */}
-							<Importance
-								projectData={projectData}
-								setProjectData={setProjectData}
-							/>
-						</Stack>
+								{/* Importance Selection */}
+								<Importance
+									projectData={projectData}
+									setProjectData={setProjectData}
+									hover={hover}
+									setHover={setHover}
+								/>
+							</Stack>
+						</LocalizationProvider>
 					</DialogContent>
 					<DialogActions>
 						<Button variant="contained" onClick={handleClose}>

@@ -18,10 +18,8 @@ const importanceLabels = {
 	4: "ASAP!",
 };
 
-const Importance = ({ projectData, setProjectData }) => {
-	// Controll importance label
-	const [hover, setHover] = useState(2);
-
+const Importance = ({ projectData, setProjectData, hover, setHover }) => {
+	console.log(hover + " vs " + projectData.importance);
 	return (
 		<>
 			<Typography component="legend">Importance</Typography>
@@ -32,9 +30,8 @@ const Importance = ({ projectData, setProjectData }) => {
 				spacing={2}
 			>
 				<StyledRating
-					name="customized-color"
-					defaultValue={2}
-					getLabelText={(value) => `${value} Heart${value !== 1 ? "s" : ""}`}
+					value={projectData.importance}
+					getLabelText={(value) => `${value} Importance`}
 					max={4}
 					icon={<FmdBadIcon fontSize="inherit" />}
 					emptyIcon={<FmdBadIcon fontSize="inherit" />}

@@ -1,9 +1,10 @@
 import axios from "axios";
 import moment from "moment";
 
-const url = "http://localhost:5000";
+const url = "http://localhost:5000/projects";
 
 export const createProject = (newProject) => {
+	// Join date & hour
 	const projectToSend = {
 		...newProject,
 		dueDate: `${moment(newProject.dueDate).format("YYYY-MM-DD")}T${moment(
@@ -11,6 +12,6 @@ export const createProject = (newProject) => {
 		).format("HH:mm")}Z`,
 	};
 	delete projectToSend.dueTime;
-	console.log(projectToSend);
-	return axios.post(`${url}/projects`, projectToSend);
+
+	return axios.post(url, projectToSend);
 };
