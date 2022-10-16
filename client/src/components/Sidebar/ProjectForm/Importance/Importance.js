@@ -19,7 +19,6 @@ const importanceLabels = {
 };
 
 const Importance = ({ projectData, setProjectData, hover, setHover }) => {
-	console.log(hover + " vs " + projectData.importance);
 	return (
 		<>
 			<Typography component="legend">Importance</Typography>

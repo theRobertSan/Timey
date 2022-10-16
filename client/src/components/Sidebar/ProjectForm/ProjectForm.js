@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
 	Button,
 	TextField,
@@ -19,7 +19,6 @@ import { TimePicker } from "@mui/x-date-pickers/TimePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
 import dayjs from "dayjs";
-import { useState } from "react";
 import { useDispatch } from "react-redux";
 import Importance from "./Importance/Importance";
 
@@ -30,8 +29,8 @@ const initialProjectData = {
 	name: "",
 	description: "",
 	course: "",
-	dueDate: "",
-	dueTime: "",
+	dueDate: null,
+	dueTime: null,
 	importance: 2,
 };
 
@@ -43,6 +42,13 @@ const ProjectForm = () => {
 	const dispatch = useDispatch();
 	// Project Data
 	const [projectData, setProjectData] = useState(initialProjectData);
+	// Submit button disable based on validation
+	const isEnabled =
+		projectData.name.length > 0 &&
+		projectData.dueDate instanceof Date &&
+		!isNaN(projectData.dueDate) &&
+		(projectData.dueTime === null ||
+			(projectData.dueTime instanceof Date && !isNaN(projectData.dueTime)));
 	// Controll the opening of the dialog box
 	const [open, setOpen] = useState(false);
 
@@ -81,7 +87,6 @@ const ProjectForm = () => {
 				onClose={handleClose}
 				TransitionComponent={Transition}
 				keepMounted
-				aria-describedby="alert-dialog-slide-description"
 			>
 				<DialogTitle variant="h5">
 					<Typography variant="inherit" align="center">
@@ -131,7 +136,10 @@ const ProjectForm = () => {
 									inputFormat="DD/MM/YYYY"
 									value={projectData.dueDate || null}
 									onChange={(newDate) => {
-										setProjectData({ ...projectData, dueDate: newDate._d });
+										setProjectData({
+											...projectData,
+											dueDate: newDate ? newDate._d : null,
+										});
 									}}
 									renderInput={(params) => <TextField required {...params} />}
 								/>
@@ -141,7 +149,10 @@ const ProjectForm = () => {
 									label="Due Time"
 									value={projectData.dueTime || null}
 									onChange={(newTime) => {
-										setProjectData({ ...projectData, dueTime: newTime });
+										setProjectData({
+											...projectData,
+											dueTime: newTime ? newTime._d : null,
+										});
 										console.log(newTime._d);
 									}}
 									renderInput={(params) => <TextField {...params} />}
@@ -161,7 +172,7 @@ const ProjectForm = () => {
 						<Button variant="contained" onClick={handleClose}>
 							Cancel
 						</Button>
-						<Button variant="contained" type="submit">
+						<Button variant="contained" type="submit" disabled={!isEnabled}>
 							Submit
 						</Button>
 					</DialogActions>
