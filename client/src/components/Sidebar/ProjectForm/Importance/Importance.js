@@ -1,5 +1,5 @@
 import { Typography, Divider, Rating, Box, Stack, styled } from "@mui/material";
-import { Favorite, FavoriteBorder } from "@mui/icons-material";
+import FmdBadIcon from "@mui/icons-material/FmdBad";
 import { useState } from "react";
 
 const StyledRating = styled(Rating)({
@@ -36,8 +36,8 @@ const Importance = ({ projectData, setProjectData }) => {
 					defaultValue={2}
 					getLabelText={(value) => `${value} Heart${value !== 1 ? "s" : ""}`}
 					max={4}
-					icon={<Favorite fontSize="inherit" />}
-					emptyIcon={<FavoriteBorder fontSize="inherit" />}
+					icon={<FmdBadIcon fontSize="inherit" />}
+					emptyIcon={<FmdBadIcon fontSize="inherit" />}
 					onChangeActive={(event, newHover) => {
 						setHover(newHover);
 					}}

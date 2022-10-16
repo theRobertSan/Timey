@@ -17,7 +17,7 @@ const projectSchema = Schema({
 	importance: {
 		type: Number,
 		min: 1,
-		max: 3,
+		max: 4,
 		default: 2,
 	},
 });

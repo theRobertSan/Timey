@@ -16,12 +16,13 @@ import {
 import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
 import { TimePicker } from "@mui/x-date-pickers/TimePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
 import dayjs from "dayjs";
 import { useState } from "react";
-import FavoriteIcon from "@mui/icons-material/Favorite";
-import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import { useDispatch } from "react-redux";
 import Importance from "./Importance/Importance";
+
+import { createProject } from "../../../actions/projects";
 
 const initialProjectData = {
 	name: "",
@@ -37,6 +38,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 });
 
 const ProjectForm = () => {
+	const dispatch = useDispatch();
 	// Project Data
 	const [projectData, setProjectData] = useState(initialProjectData);
 	// Controll the opening of the dialog box
@@ -55,6 +57,9 @@ const ProjectForm = () => {
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 		setOpen(false);
+
+		dispatch(createProject(projectData));
+
 		// Clean project data
 		setProjectData(initialProjectData);
 	};
@@ -72,9 +77,8 @@ const ProjectForm = () => {
 				aria-describedby="alert-dialog-slide-description"
 			>
 				<DialogTitle>Create Project</DialogTitle>
-
-				<DialogContent>
-					<form>
+				<form autoComplete="off" noValidate onSubmit={handleSubmit}>
+					<DialogContent>
 						<Stack spacing={1}>
 							{/* Name */}
 							<TextField
@@ -116,20 +120,19 @@ const ProjectForm = () => {
 									setProjectData({ ...projectData, course: e.target.value })
 								}
 							>
-								<MenuItem value={10}>Course 1</MenuItem>
-								<MenuItem value={20}>Course 2</MenuItem>
+								<MenuItem value={"634b153e68ff66ff49987b5e"}>Course 1</MenuItem>
+								<MenuItem value={"634b153e68ff66ff49987b5e"}>Course 2</MenuItem>
 							</TextField>
 
 							{/* Date & Hour Selection */}
-							<LocalizationProvider dateAdapter={AdapterDayjs}>
+							<LocalizationProvider dateAdapter={AdapterMoment}>
 								<DesktopDatePicker
 									required
 									label="Due Date"
 									inputFormat="DD/MM/YYYY"
 									value={projectData.dueDate}
 									onChange={(newDate) => {
-										setProjectData({ ...projectData, dueDate: newDate });
-										console.log(newDate);
+										setProjectData({ ...projectData, dueDate: newDate._d });
 									}}
 									renderInput={(params) => <TextField {...params} />}
 								/>
@@ -139,28 +142,28 @@ const ProjectForm = () => {
 									value={projectData.dueTime}
 									onChange={(newTime) => {
 										setProjectData({ ...projectData, dueTime: newTime });
-										console.log(newTime);
+										console.log(newTime._d);
 									}}
 									renderInput={(params) => <TextField {...params} />}
 								/>
 							</LocalizationProvider>
 
-							{/* Date & Hour Selection */}
+							{/* Importance Selection */}
 							<Importance
 								projectData={projectData}
 								setProjectData={setProjectData}
 							/>
 						</Stack>
-					</form>
-				</DialogContent>
-				<DialogActions>
-					<Button variant="contained" onClick={handleClose}>
-						Cancel
-					</Button>
-					<Button variant="contained" type="submit" onClick={handleSubmit}>
-						Submit
-					</Button>
-				</DialogActions>
+					</DialogContent>
+					<DialogActions>
+						<Button variant="contained" onClick={handleClose}>
+							Cancel
+						</Button>
+						<Button variant="contained" type="submit">
+							Submit
+						</Button>
+					</DialogActions>
+				</form>
 			</Dialog>
 		</>
 	);
