@@ -1,3 +1,4 @@
+import React from "react";
 import {
 	Button,
 	TextField,
@@ -10,23 +11,35 @@ import {
 	Stack,
 	InputLabel,
 	FormControl,
+	Slide,
 } from "@mui/material";
 import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
+import { TimePicker } from "@mui/x-date-pickers/TimePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs from "dayjs";
 import { useState } from "react";
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import Importance from "./Importance/Importance";
+
+const initialProjectData = {
+	name: "",
+	description: "",
+	course: "",
+	dueDate: "",
+	dueTime: "",
+	importance: 2,
+};
+
+const Transition = React.forwardRef(function Transition(props, ref) {
+	return <Slide direction="up" ref={ref} {...props} />;
+});
 
 const ProjectForm = () => {
 	// Project Data
-	const [projectData, setProjectData] = useState({
-		name: "",
-		description: "",
-		course: "",
-		dueDate: "",
-		importance: "",
-	});
-	// Variable to controll the opening of the dialog box
+	const [projectData, setProjectData] = useState(initialProjectData);
+	// Controll the opening of the dialog box
 	const [open, setOpen] = useState(false);
 
 	const handleClickOpen = () => {
@@ -36,17 +49,14 @@ const ProjectForm = () => {
 	const handleClose = () => {
 		setOpen(false);
 		// Clean project data
-		setProjectData({
-			name: "",
-			description: "",
-			course: "",
-			dueDate: "",
-			importance: "",
-		});
+		setProjectData(initialProjectData);
 	};
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
+		setOpen(false);
+		// Clean project data
+		setProjectData(initialProjectData);
 	};
 
 	return (
@@ -54,16 +64,23 @@ const ProjectForm = () => {
 			<Button variant="contained" onClick={handleClickOpen}>
 				Create Project
 			</Button>
-			<Dialog open={open} onClose={handleClose}>
-				<form>
-					<DialogTitle>Create Project</DialogTitle>
+			<Dialog
+				open={open}
+				onClose={handleClose}
+				TransitionComponent={Transition}
+				keepMounted
+				aria-describedby="alert-dialog-slide-description"
+			>
+				<DialogTitle>Create Project</DialogTitle>
 
-					<DialogContent>
-						<FormControl fullWidth>
+				<DialogContent>
+					<form>
+						<Stack spacing={1}>
 							{/* Name */}
 							<TextField
-								fullWidth
 								autoFocus
+								margin="dense"
+								fullWidth
 								required
 								label="Name"
 								name="name"
@@ -75,6 +92,7 @@ const ProjectForm = () => {
 
 							{/* Description */}
 							<TextField
+								margin="dense"
 								fullWidth
 								label="Description"
 								name="description"
@@ -88,8 +106,9 @@ const ProjectForm = () => {
 							/>
 
 							{/* Course Selection */}
-
-							<Select
+							<TextField
+								select
+								margin="dense"
 								label="RelatedCourse"
 								name="relatedCourse"
 								value={projectData.course}
@@ -97,13 +116,14 @@ const ProjectForm = () => {
 									setProjectData({ ...projectData, course: e.target.value })
 								}
 							>
-								<MenuItem value={10}>Ten</MenuItem>
-								<MenuItem value={20}>Two</MenuItem>
-							</Select>
+								<MenuItem value={10}>Course 1</MenuItem>
+								<MenuItem value={20}>Course 2</MenuItem>
+							</TextField>
 
-							{/* Date Selection */}
+							{/* Date & Hour Selection */}
 							<LocalizationProvider dateAdapter={AdapterDayjs}>
 								<DesktopDatePicker
+									required
 									label="Due Date"
 									inputFormat="DD/MM/YYYY"
 									value={projectData.dueDate}
@@ -113,16 +133,34 @@ const ProjectForm = () => {
 									}}
 									renderInput={(params) => <TextField {...params} />}
 								/>
+
+								<TimePicker
+									label="Due Time"
+									value={projectData.dueTime}
+									onChange={(newTime) => {
+										setProjectData({ ...projectData, dueTime: newTime });
+										console.log(newTime);
+									}}
+									renderInput={(params) => <TextField {...params} />}
+								/>
 							</LocalizationProvider>
-						</FormControl>
-					</DialogContent>
-					<DialogActions>
-						<Button onClick={handleClose}>Cancel</Button>
-						<Button type="submit" onClick={handleSubmit}>
-							Submit
-						</Button>
-					</DialogActions>
-				</form>
+
+							{/* Date & Hour Selection */}
+							<Importance
+								projectData={projectData}
+								setProjectData={setProjectData}
+							/>
+						</Stack>
+					</form>
+				</DialogContent>
+				<DialogActions>
+					<Button variant="contained" onClick={handleClose}>
+						Cancel
+					</Button>
+					<Button variant="contained" type="submit" onClick={handleSubmit}>
+						Submit
+					</Button>
+				</DialogActions>
 			</Dialog>
 		</>
 	);
