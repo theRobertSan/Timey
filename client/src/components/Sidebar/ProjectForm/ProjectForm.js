@@ -4,6 +4,7 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
 import { useDispatch } from "react-redux";
 import Importance from "./Importance/Importance";
+import moment from "moment";
 
 import { createProject } from "../../../actions/projects";
 import CourseSelector from "./CourseSelector/CourseSelector";
@@ -30,12 +31,19 @@ const ProjectForm = () => {
   // Project Data
   const [projectData, setProjectData] = useState(initialProjectData);
 
+  console.log(moment(projectData.dueDate).isSameOrAfter(new Date(), "day"));
+
   // Submit button disable based on validation
   const isEnabled =
+    // Name exists
     projectData.name.length > 0 &&
+    // Date inserted exists and is in the future or today
     projectData.dueDate instanceof Date &&
     !isNaN(projectData.dueDate) &&
-    (projectData.dueTime === null || (projectData.dueTime instanceof Date && !isNaN(projectData.dueTime)));
+    moment(projectData.dueDate).isSameOrAfter(new Date(), "day") &&
+    // If time inserted exists, it's in in the future
+    (projectData.dueTime === null ||
+      (projectData.dueTime instanceof Date && !isNaN(projectData.dueTime) && (moment(projectData.dueDate).isAfter(new Date(), "day") || moment(projectData.dueTime).isSameOrAfter(new Date()))));
 
   // Controll the opening of the dialog box
   const [open, setOpen] = useState(false);
@@ -67,7 +75,7 @@ const ProjectForm = () => {
 
   return (
     <>
-      <Button variant="contained" onClick={handleClickOpen}>
+      <Button color="secondary" variant="contained" onClick={handleClickOpen}>
         Create Project
       </Button>
       <Dialog open={open} onClose={handleClose} TransitionComponent={Transition} keepMounted>

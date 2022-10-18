@@ -14,6 +14,7 @@ const ProjectDatePicker = ({ projectData, setProjectData }) => {
             dueDate: newDate ? newDate._d : null,
           });
         }}
+        minDate={new Date()}
         renderInput={(params) => <TextField required {...params} />}
       />
     </>
