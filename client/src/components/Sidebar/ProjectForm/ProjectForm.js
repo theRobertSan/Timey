@@ -11,6 +11,7 @@ import CourseSelector from "./CourseSelector/CourseSelector";
 import ProjectDatePicker from "./ProjectDatePicker/ProjectDatePicker";
 import ProjectTimePicker from "./ProjectTimePicker/ProjectTimePicker";
 import ProjectTextField from "./ProjectTextField/ProjectTextField";
+import useGlobalStyles from "../../../globalStyles";
 
 const initialProjectData = {
   name: "",
@@ -26,6 +27,8 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 });
 
 const ProjectForm = () => {
+  const global = useGlobalStyles();
+
   const dispatch = useDispatch();
 
   // Project Data
@@ -75,7 +78,7 @@ const ProjectForm = () => {
 
   return (
     <>
-      <Button color="secondary" variant="contained" onClick={handleClickOpen}>
+      <Button className={global.sideButton} onClick={handleClickOpen}>
         Create Project
       </Button>
       <Dialog open={open} onClose={handleClose} TransitionComponent={Transition} keepMounted>

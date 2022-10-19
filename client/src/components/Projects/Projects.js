@@ -1,22 +1,32 @@
-import { Typography, Paper, Stack } from "@mui/material";
+import { Grid, Typography } from "@mui/material";
 import { useSelector } from "react-redux";
+
 import Project from "./Project/Project";
+import useStyles from "./styles.js";
+import useGlobalStyles from "../../globalStyles";
 
 const Projects = () => {
+  const classes = useStyles();
+  const global = useGlobalStyles();
+
   const projects = useSelector((state) => state.projects);
   const sortedProjects = projects.sort((projectA, projectB) => Number(new Date(projectA.dueDate)) - Number(new Date(projectB.dueDate)));
 
-  if (projects[0]) {
-    console.log(Number(new Date(projects[0].dueDate)));
-  }
-  const projectItems = sortedProjects.map((project) => <Project project={project}></Project>);
+  const projectItems = sortedProjects.map((project) => (
+    <Grid item xs={3}>
+      <Project project={project}></Project>
+    </Grid>
+  ));
 
   return (
-    <>
-      <Stack direction={{ xs: "column", sm: "row" }} spacing={{ xs: 1, sm: 2, md: 4 }}>
+    <div className={classes.projectsBox}>
+      <Typography className={classes.title} variant="h4">
+        My Projects
+      </Typography>
+      <Grid container justifyContent="flex-start" alignItems="center" rowSpacing={3} columnSpacing={{ xs: 1, sm: 2, md: 5 }}>
         {projectItems}
-      </Stack>
-    </>
+      </Grid>
+    </div>
   );
 };
 

@@ -1,4 +1,4 @@
-import { Grid } from "@mui/material";
+import { Grid, StyledEngineProvider } from "@mui/material";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { createTheme, ThemeProvider } from "@mui/material";
@@ -7,6 +7,8 @@ import Sidebar from "./components/Sidebar/Sidebar";
 import { getCourses } from "./actions/courses";
 import Projects from "./components/Projects/Projects";
 import { getProjects } from "./actions/projects";
+import { white } from "@mui/material/colors";
+import useGlobalStyles from "./globalStyles";
 
 const theme = createTheme({
   palette: {
@@ -20,6 +22,8 @@ const theme = createTheme({
 });
 
 const App = () => {
+  const global = useGlobalStyles();
+
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -30,10 +34,16 @@ const App = () => {
   return (
     <>
       <ThemeProvider theme={theme}>
-        <Grid container direction="row" justifyContent="space-around" alignItems="stretch">
-          <Sidebar />
-          <Projects />
-        </Grid>
+        <StyledEngineProvider injectFirst>
+          <Grid container direction="row" className={global.home}>
+            <Grid item xs>
+              <Sidebar />
+            </Grid>
+            <Grid item xs="10">
+              <Projects />
+            </Grid>
+          </Grid>
+        </StyledEngineProvider>
       </ThemeProvider>
     </>
   );
