@@ -13,10 +13,13 @@ export const getCourses = async (req, res) => {
 };
 
 export const createCourse = async (req, res) => {
-  const { name } = req.body;
+  const { name, color } = req.body;
   try {
-    let newCourse = new Course({ name });
+    let newCourse = new Course({ name, color });
     await newCourse.save();
+
+    // Populate course
+    newCourse = await Course.populate(newCourse, { path: "color" });
 
     res.status(201).json(newCourse);
   } catch (error) {

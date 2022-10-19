@@ -7,7 +7,7 @@ import Sidebar from "./components/Sidebar/Sidebar";
 import { getCourses } from "./actions/courses";
 import Projects from "./components/Projects/Projects";
 import { getProjects } from "./actions/projects";
-import { white } from "@mui/material/colors";
+import { getColors } from "./actions/colors";
 import useGlobalStyles from "./globalStyles";
 
 const theme = createTheme({
@@ -29,6 +29,7 @@ const App = () => {
   useEffect(() => {
     dispatch(getCourses());
     dispatch(getProjects());
+    dispatch(getColors());
   }, [dispatch]);
 
   return (

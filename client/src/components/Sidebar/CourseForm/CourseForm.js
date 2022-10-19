@@ -1,13 +1,15 @@
 import React, { useState } from "react";
+import { useSelector } from "react-redux";
 import { Dialog, Button, Slide, DialogTitle, Typography, DialogContent, Stack, TextField, DialogActions } from "@mui/material";
 import { useDispatch } from "react-redux";
-import EmojiEmotionsIcon from "@mui/icons-material/EmojiEmotions";
-
+import ColorLensIcon from "@mui/icons-material/ColorLens";
 import { createCourse } from "../../../actions/courses";
 import useGlobalStyles from "../../../globalStyles";
+import { useEffect } from "react";
 
 const initialCourseData = {
   name: "",
+  color: "",
 };
 
 const Transition = React.forwardRef(function Transition(props, ref) {
@@ -17,9 +19,23 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 const CourseForm = () => {
   const global = useGlobalStyles();
 
+  const colors = useSelector((state) => state.colors);
+
+  console.log(colors);
+
   const dispatch = useDispatch();
+
+  // Color Data
+  const [colorIndex, setColorIndex] = useState(0);
+
   // Course Data
   const [courseData, setCourseData] = useState(initialCourseData);
+
+  useEffect(() => {
+    console.log("HI");
+    setCourseData({ ...courseData, color: colors[colorIndex] ? colors[colorIndex]._id : "" });
+  }, [colors]);
+
   // Submit button disable based on validation
   const isEnabled = courseData.name.length > 0;
   // Controll the opening of the dialog box
@@ -46,6 +62,15 @@ const CourseForm = () => {
     setCourseData(initialCourseData);
   };
 
+  const getNextColor = () => {
+    return colors[colorIndex] ? colors[colorIndex].hex : undefined;
+  };
+
+  const changeColor = () => {
+    setColorIndex((colorIndex) => (colorIndex + 1) % colors.length);
+    setCourseData({ ...courseData, color: colors[colorIndex]._id });
+  };
+
   return (
     <>
       <Button className={global.sideButton} onClick={handleClickOpen}>
@@ -64,10 +89,10 @@ const CourseForm = () => {
               {/* Name */}
               <TextField autoFocus fullWidth required label="Name" name="name" value={courseData.name} onChange={(e) => setCourseData({ ...courseData, name: e.target.value })} />
 
-              <div>
-                <Button>New Color</Button>
-                <EmojiEmotionsIcon />
-              </div>
+              <Stack direction="row" justifyContent="flex-star" alignItems="flex-start" spacing={3}>
+                <Button onClick={changeColor}>New Color</Button>
+                <ColorLensIcon style={{ color: getNextColor() }} />
+              </Stack>
             </Stack>
           </DialogContent>
           <DialogActions>
