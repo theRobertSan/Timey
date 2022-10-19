@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Dialog, Button, Slide, DialogTitle, Typography, DialogContent, Stack, TextField, DialogActions } from "@mui/material";
 import { useDispatch } from "react-redux";
+import EmojiEmotionsIcon from "@mui/icons-material/EmojiEmotions";
 
 import { createCourse } from "../../../actions/courses";
 import useGlobalStyles from "../../../globalStyles";
@@ -62,6 +63,11 @@ const CourseForm = () => {
             <Stack spacing={2}>
               {/* Name */}
               <TextField autoFocus fullWidth required label="Name" name="name" value={courseData.name} onChange={(e) => setCourseData({ ...courseData, name: e.target.value })} />
+
+              <div>
+                <Button>New Color</Button>
+                <EmojiEmotionsIcon />
+              </div>
             </Stack>
           </DialogContent>
           <DialogActions>
