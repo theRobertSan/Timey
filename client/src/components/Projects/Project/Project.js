@@ -6,7 +6,7 @@ import moment from "moment";
 import useStyles from "./styles.js";
 import useGlobalStyles from "../../../globalStyles";
 
-const Project = ({ project, course }) => {
+const Project = ({ project }) => {
   const [open, setOpen] = useState(false);
   const classes = useStyles();
   const global = useGlobalStyles();
@@ -18,9 +18,10 @@ const Project = ({ project, course }) => {
   const handleClose = () => {
     setOpen(false);
   };
+  console.log(project);
   return (
     <>
-      <Stack className={classes.projectBox} direction="row" justifyContent="space-between" alignItems="center" spacing={2}>
+      <Stack style={{ backgroundColor: project.course.color.hex }} className={classes.projectBox} direction="row" justifyContent="space-between" alignItems="center" spacing={2}>
         <Grid container direction="column" justifyContent="space-around" alignItems="space-around">
           <Grid item>
             {project.course.name}
@@ -37,7 +38,7 @@ const Project = ({ project, course }) => {
         </Grid>
 
         <IconButton onClick={handleClickOpen}>
-          <InfoIcon />
+          <InfoIcon fontSize="large" className={classes.infoIcon} />
         </IconButton>
       </Stack>
 

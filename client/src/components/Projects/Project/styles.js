@@ -2,14 +2,14 @@ import { makeStyles } from "@mui/styles";
 
 export default makeStyles({
   projectBox: {
-    padding: "25px",
+    padding: "30px 25px 30px 35px",
     margin: "0px",
     borderRadius: "80px",
     border: "1px solid #fff",
     height: "120px",
     color: "white",
     fontFamily: "var(--fontFamily-nunito-bold)",
-    backgroundColor: "#62B4FE",
+    // backgroundColor: "#62B4FE",
   },
   projectTitle: {
     fontFamily: "var(--fontFamily-nunito-bold)",
@@ -20,5 +20,8 @@ export default makeStyles({
 
   infoDialog: {
     minWidth: "200px",
+  },
+  infoIcon: {
+    color: "rgba(0, 0, 0, 0.15)",
   },
 });

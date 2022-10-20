@@ -4,7 +4,7 @@ import Course from "../models/course.js";
 
 export const getCourses = async (req, res) => {
   try {
-    const courses = await Course.find();
+    const courses = await Course.find().populate({ path: "color" });
 
     res.json(courses);
   } catch (error) {

@@ -1,6 +1,7 @@
 import { ListItem, ListItemButton, ListItemText } from "@mui/material";
 import { useSelector } from "react-redux";
 import { FixedSizeList } from "react-window";
+import CircleIcon from "@mui/icons-material/Circle";
 
 import useStyles from "./styles.js";
 
@@ -14,7 +15,7 @@ const Courses = () => {
 
     return (
       <ListItem className={classes.row} style={style} key={courses[index]._id} component="div" disablePadding>
-        {courses[index].name}
+        <CircleIcon style={{ color: courses[index].color.hex }} /> &nbsp; {courses[index].name}
       </ListItem>
     );
   };
