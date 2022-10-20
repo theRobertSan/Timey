@@ -3,11 +3,19 @@ import * as api from "../api/projectApi";
 
 export const createProject = (project) => async (dispatch) => {
   try {
-    const { data } = await api.createProject(project);
+    const { status, data } = await api.createProject(project);
+
+    // Project not created
+    if (status !== 201) {
+      return { success: false };
+    }
 
     dispatch({ type: CREATE_PROJECT, payload: data });
+
+    return { success: true };
   } catch (error) {
     console.log(error);
+    return { success: false };
   }
 };
 

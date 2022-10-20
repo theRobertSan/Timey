@@ -12,6 +12,7 @@ import ProjectDatePicker from "./ProjectDatePicker/ProjectDatePicker";
 import ProjectTimePicker from "./ProjectTimePicker/ProjectTimePicker";
 import ProjectTextField from "./ProjectTextField/ProjectTextField";
 import useGlobalStyles from "../../../globalStyles";
+import CustomSnackbar from "../../CustomSnackbar/CustomSnackbar";
 
 const initialProjectData = {
   name: "",
@@ -70,10 +71,40 @@ const ProjectForm = () => {
     setOpen(false);
     setHover(2);
 
-    dispatch(createProject(projectData));
+    const apiResponsePromise = dispatch(createProject(projectData));
+
+    // Display success or error snackbar
+    apiResponsePromise.then(({ success }) => {
+      if (success) {
+        displaySuccess();
+      } else {
+        displayError();
+      }
+    });
 
     // Clean project data
     setProjectData(initialProjectData);
+  };
+
+  // Controll the snackbar
+  const [snackbar, setSnackbar] = useState({
+    open: false,
+    success: false,
+  });
+
+  const displaySuccess = () => {
+    setSnackbar({ open: true, success: true });
+  };
+
+  const displayError = () => {
+    setSnackbar({ open: true, success: false });
+  };
+
+  const closeSnackbar = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setSnackbar({ ...snackbar, open: false });
   };
 
   return (
@@ -121,6 +152,13 @@ const ProjectForm = () => {
           </DialogActions>
         </form>
       </Dialog>
+
+      <CustomSnackbar
+        open={snackbar.open}
+        onClose={closeSnackbar}
+        severity={snackbar.success ? "success" : "error"}
+        message={snackbar.success ? "Project created successfully!" : "Error creating project. Try again later!"}
+      />
     </>
   );
 };
