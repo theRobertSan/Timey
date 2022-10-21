@@ -20,15 +20,9 @@ export const getProjects = async (req, res) => {
 };
 
 export const createProject = async (req, res) => {
-  const { name, description, course, dueDate, importance } = req.body;
+  const projectData = req.body;
   try {
-    let newProject = new Project({
-      name,
-      description,
-      course,
-      dueDate,
-      importance,
-    });
+    let newProject = new Project(projectData);
     await newProject.save();
 
     // Populate course

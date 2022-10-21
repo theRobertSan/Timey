@@ -4,7 +4,8 @@ import * as api from "../api/projectApi";
 export const createProject = (project) => async (dispatch) => {
   try {
     const { status, data } = await api.createProject(project);
-
+    console.log("!!!!!!!!!!!!!!!!!!");
+    console.log(data);
     // Project not created
     if (status !== 201) {
       return { success: false };

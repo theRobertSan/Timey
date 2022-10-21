@@ -3,7 +3,7 @@ import { Button, Dialog, DialogTitle, DialogActions, DialogContent, Slide, Typog
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
 import { useDispatch } from "react-redux";
-import Importance from "./Importance/Importance";
+import Difficulty from "./Difficulty/Difficulty";
 import moment from "moment";
 
 import { createProject, updateProject } from "../../../actions/projects";
@@ -20,7 +20,7 @@ const initialProjectData = {
   course: "",
   dueDate: null,
   dueTime: null,
-  importance: 2,
+  difficulty: 2,
 };
 
 const Transition = React.forwardRef(function Transition(props, ref) {
@@ -28,6 +28,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 });
 
 const ProjectForm = ({ open, setOpen, currentProject }) => {
+  console.log(currentProject);
   const global = useGlobalStyles();
 
   // Handle its own closure when submiting or canceling
@@ -44,7 +45,7 @@ const ProjectForm = ({ open, setOpen, currentProject }) => {
     console.log("Refreshed");
     const project = currentProject ? currentProject : initialProjectData;
     setProjectData(project);
-    setHover(project.importance);
+    setHover(project.difficulty);
   }, [open]);
 
   // console.log(moment(projectData.dueDate).isSameOrAfter(new Date(), "day"));
@@ -61,7 +62,7 @@ const ProjectForm = ({ open, setOpen, currentProject }) => {
     (projectData.dueTime === null ||
       (projectData.dueTime instanceof Date && !isNaN(projectData.dueTime) && (moment(projectData.dueDate).isAfter(new Date(), "day") || moment(projectData.dueTime).isSameOrAfter(new Date()))));
   console.log(projectData.dueDate);
-  // Controll importance label
+  // Controll Difficulty label
   const [hover, setHover] = useState(2);
 
   const handleSubmit = async (e) => {
@@ -138,8 +139,8 @@ const ProjectForm = ({ open, setOpen, currentProject }) => {
                 {/* Time Selection */}
                 <ProjectTimePicker projectData={projectData} setProjectData={setProjectData} />
 
-                {/* Importance Selection */}
-                <Importance projectData={projectData} setProjectData={setProjectData} hover={hover} setHover={setHover} />
+                {/* Difficulty Selection */}
+                <Difficulty projectData={projectData} setProjectData={setProjectData} hover={hover} setHover={setHover} />
               </Stack>
             </LocalizationProvider>
           </DialogContent>

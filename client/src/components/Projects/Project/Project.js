@@ -13,14 +13,14 @@ import useGlobalStyles from "../../../globalStyles";
 import ProjectForm from "../../Sidebar/ProjectForm/ProjectForm.js";
 import { deleteProject } from "../../../actions/projects.js";
 
-const convert = ({ _id, name, description, course, dueDate, importance }) => ({
+const convert = ({ _id, name, description, course, dueDate, difficulty }) => ({
   _id,
   name,
   description,
   course: course._id,
   dueDate: new Date(dueDate),
   dueTime: new Date(dueDate),
-  importance,
+  difficulty,
 });
 
 const Project = ({ project }) => {

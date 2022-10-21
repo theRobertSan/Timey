@@ -27,10 +27,10 @@ const OrderProjects = ({ originalProjects, projects, setProjects }) => {
         sortedProjects.sort((projectA, projectB) => Number(new Date(projectB.dueDate)) - Number(new Date(projectA.dueDate)));
         break;
       case 2:
-        sortedProjects.sort((projectA, projectB) => projectB.importance - projectA.importance);
+        sortedProjects.sort((projectA, projectB) => projectB.difficulty - projectA.difficulty);
         break;
       default:
-        sortedProjects.sort((projectA, projectB) => projectA.importance - projectB.importance);
+        sortedProjects.sort((projectA, projectB) => projectA.difficulty - projectB.difficulty);
     }
     console.log(sortedProjects);
     setProjects(sortedProjects);

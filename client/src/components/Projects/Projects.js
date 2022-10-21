@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Grid, Stack, Typography } from "@mui/material";
+import { Grid, Stack, Typography, LinearProgress } from "@mui/material";
 import { useSelector } from "react-redux";
 
 import Project from "./Project/Project";
@@ -22,16 +22,18 @@ const Projects = () => {
     </Grid>
   ));
 
+  console.log(projectItems);
+
   return (
     <div className={classes.projectsBox}>
-      <Stack direction="row" justifyContent="space-between" alignItems="center">
+      <Stack direction="row" justifyContent="flex-start" alignItems="center" spacing={4}>
         <Typography className={classes.title} variant="h4">
           My Projects
         </Typography>
         <OrderProjects originalProjects={projects} projects={sortedProjects} setProjects={setSortedProjects} />
       </Stack>
       <Grid container justifyContent="flex-start" alignItems="center" rowSpacing={3} columnSpacing={{ xs: 1, sm: 2, md: 5 }}>
-        {projectItems}
+        {projectItems.length !== 0 ? projectItems : <LinearProgress />}
       </Grid>
     </div>
   );
