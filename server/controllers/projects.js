@@ -47,6 +47,31 @@ export const createProject = async (req, res) => {
   }
 };
 
+export const updateProject = async (req, res) => {
+  const { id } = req.params;
+
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    return res.status(404).send({ message: `Error: Id ${id} is invalid.` });
+  }
+
+  const project = req.body;
+  console.log(project);
+  try {
+    const updatedProject = await Project.findByIdAndUpdate(id, { ...project }, { new: true }).populate({
+      path: "course",
+      model: "Course",
+      populate: {
+        path: "color",
+        model: "Color",
+      },
+    });
+
+    res.status(200).json(updatedProject);
+  } catch (error) {
+    res.status(409).json({ message: error.message });
+  }
+};
+
 export const deleteProject = async (req, res) => {
   const { id } = req.params;
 

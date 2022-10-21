@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Dialog, DialogTitle, DialogActions, DialogContent, Slide, Typography, Stack } from "@mui/material";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
@@ -6,7 +6,7 @@ import { useDispatch } from "react-redux";
 import Importance from "./Importance/Importance";
 import moment from "moment";
 
-import { createProject } from "../../../actions/projects";
+import { createProject, updateProject } from "../../../actions/projects";
 import CourseSelector from "./CourseSelector/CourseSelector";
 import ProjectDatePicker from "./ProjectDatePicker/ProjectDatePicker";
 import ProjectTimePicker from "./ProjectTimePicker/ProjectTimePicker";
@@ -27,15 +27,27 @@ const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-const ProjectForm = () => {
+const ProjectForm = ({ open, setOpen, currentProject }) => {
   const global = useGlobalStyles();
 
+  // Handle its own closure when submiting or canceling
+  const handleClose = () => {
+    setOpen(false);
+  };
+
   const dispatch = useDispatch();
-
   // Project Data
-  const [projectData, setProjectData] = useState(initialProjectData);
+  const [projectData, setProjectData] = useState(currentProject ? currentProject : initialProjectData);
 
-  console.log(moment(projectData.dueDate).isSameOrAfter(new Date(), "day"));
+  // Refresh project on open
+  useEffect(() => {
+    console.log("Refreshed");
+    const project = currentProject ? currentProject : initialProjectData;
+    setProjectData(project);
+    setHover(project.importance);
+  }, [open]);
+
+  // console.log(moment(projectData.dueDate).isSameOrAfter(new Date(), "day"));
 
   // Submit button disable based on validation
   const isEnabled =
@@ -48,30 +60,22 @@ const ProjectForm = () => {
     // If time inserted exists, it's in in the future
     (projectData.dueTime === null ||
       (projectData.dueTime instanceof Date && !isNaN(projectData.dueTime) && (moment(projectData.dueDate).isAfter(new Date(), "day") || moment(projectData.dueTime).isSameOrAfter(new Date()))));
-
-  // Controll the opening of the dialog box
-  const [open, setOpen] = useState(false);
-
+  console.log(projectData.dueDate);
   // Controll importance label
   const [hover, setHover] = useState(2);
-
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-    setHover(2);
-    // Clean project data
-    setProjectData(initialProjectData);
-  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setOpen(false);
-    setHover(2);
 
-    const apiResponsePromise = dispatch(createProject(projectData));
+    let apiResponsePromise;
+    if (currentProject) {
+      // Update
+      apiResponsePromise = dispatch(updateProject(projectData));
+    } else {
+      // Create
+      apiResponsePromise = dispatch(createProject(projectData));
+    }
 
     // Display success or error snackbar
     apiResponsePromise.then(({ success }) => {
@@ -82,8 +86,8 @@ const ProjectForm = () => {
       }
     });
 
-    // Clean project data
-    setProjectData(initialProjectData);
+    // // Clean project data
+    // setProjectData(initialProjectData);
   };
 
   // Controll the snackbar
@@ -109,13 +113,10 @@ const ProjectForm = () => {
 
   return (
     <>
-      <Button className={global.sideButton} onClick={handleClickOpen}>
-        Create Project
-      </Button>
       <Dialog open={open} onClose={handleClose} TransitionComponent={Transition} keepMounted>
         <DialogTitle variant="h5">
           <Typography variant="inherit" align="center">
-            Create Project
+            {currentProject ? "Edit Project" : "Create Project"}
           </Typography>
         </DialogTitle>
         <form autoComplete="off" onSubmit={handleSubmit}>
@@ -157,7 +158,7 @@ const ProjectForm = () => {
         open={snackbar.open}
         onClose={closeSnackbar}
         severity={snackbar.success ? "success" : "error"}
-        message={snackbar.success ? "Project created successfully!" : "Error creating project. Try again later!"}
+        message={snackbar.success ? `Project ${currentProject ? "edited" : "created"} successfully!` : `Error ${currentProject ? "editing" : "creating"} project. Try again later!`}
       />
     </>
   );

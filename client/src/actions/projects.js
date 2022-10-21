@@ -1,4 +1,4 @@
-import { GET_PROJECTS, CREATE_PROJECT } from "../constants/actionTypes";
+import { GET_PROJECTS, CREATE_PROJECT, UPDATE_PROJECT } from "../constants/actionTypes";
 import * as api from "../api/projectApi";
 
 export const createProject = (project) => async (dispatch) => {
@@ -26,5 +26,23 @@ export const getProjects = () => async (dispatch) => {
     dispatch({ type: GET_PROJECTS, payload: data });
   } catch (error) {
     console.log(error);
+  }
+};
+
+export const updateProject = (project) => async (dispatch) => {
+  try {
+    const { status, data } = await api.updateProject(project);
+    console.log(data);
+    // Project not created
+    if (status !== 200) {
+      return { success: false };
+    }
+
+    dispatch({ type: UPDATE_PROJECT, payload: data });
+
+    return { success: true };
+  } catch (error) {
+    console.log(error);
+    return { success: false };
   }
 };

@@ -21,7 +21,18 @@ export default makeStyles({
   infoDialog: {
     minWidth: "200px",
   },
-  infoIcon: {
-    color: "rgba(0, 0, 0, 0.15)",
+  speedDial: {
+    backgroundColor: "#F76C6C",
+    "&:hover": {
+      backgroundColor: "rgba(247, 108, 108, 0.2)",
+    },
+    boxShadow: "none",
+  },
+
+  optionsButton: {
+    color: "white",
+    // "&:hover": {
+    //   color: "#F76C6C",
+    // },
   },
 });

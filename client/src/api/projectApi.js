@@ -23,4 +23,24 @@ export const createProject = (newProject) => {
   return axios.post(url, projectToSend);
 };
 
+export const updateProject = (project) => {
+  let projectToSend;
+
+  if (project.dueTime) {
+    // Join date & hour
+    projectToSend = {
+      ...project,
+      dueDate: `${moment(project.dueDate).format("YYYY-MM-DD")}T${moment(project.dueTime).format("HH:mm")}Z`,
+    };
+  } else {
+    projectToSend = {
+      ...project,
+      dueDate: `${moment(project.dueDate).format("YYYY-MM-DD")}Z`,
+    };
+  }
+
+  delete projectToSend.dueTime;
+  return axios.patch(`${url}/${project._id}`, projectToSend);
+};
+
 export const getProjects = () => axios.get(url);

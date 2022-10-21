@@ -1,9 +1,10 @@
-import { Alert, Snackbar } from "@mui/material";
+import { Alert, Slide, Snackbar } from "@mui/material";
 
 const CustomSnackbar = ({ open, onClose, severity, message }) => {
   return (
     <>
       <Snackbar
+        color=""
         open={open}
         autoHideDuration={5000}
         onClose={onClose}
@@ -11,6 +12,7 @@ const CustomSnackbar = ({ open, onClose, severity, message }) => {
           vertical: "bottom",
           horizontal: "center",
         }}
+        TransitionComponent={Slide}
       >
         <Alert onClose={onClose} severity={severity}>
           {message}

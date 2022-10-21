@@ -27,3 +27,7 @@ body {
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;
 }
+
+.MuiSpeedDial-fab {
+  background-color: red;
+}

@@ -1,24 +1,57 @@
 import React, { useState } from "react";
-import { Typography, Grid, Divider, IconButton, Stack, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Button } from "@mui/material";
+import { SpeedDialIcon, SpeedDial, SpeedDialAction, Typography, Grid, Divider, IconButton, Stack, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Button } from "@mui/material";
 import InfoIcon from "@mui/icons-material/Info";
 import moment from "moment";
+import FileCopyIcon from "@mui/icons-material/FileCopyOutlined";
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from "@mui/icons-material/Delete";
+import ShareIcon from "@mui/icons-material/Share";
 
 import useStyles from "./styles.js";
 import useGlobalStyles from "../../../globalStyles";
+import ProjectForm from "../../Sidebar/ProjectForm/ProjectForm.js";
+
+const convert = ({ _id, name, description, course, dueDate, importance }) => ({
+  _id,
+  name,
+  description,
+  course: course._id,
+  dueDate: new Date(dueDate),
+  dueTime: new Date(dueDate),
+  importance,
+});
 
 const Project = ({ project }) => {
-  const [open, setOpen] = useState(false);
   const classes = useStyles();
   const global = useGlobalStyles();
 
-  const handleClickOpen = () => {
-    setOpen(true);
+  const actions = [
+    { icon: <InfoIcon />, name: "Details", onClick: () => displayDetails() },
+    { icon: <EditIcon />, name: "Edit", onClick: () => displayEdit() },
+    { icon: <DeleteIcon />, name: "Delete", onClick: () => deleteProject() },
+  ];
+
+  const [openSpeedDial, setOpenSpeedDial] = useState(false);
+  const displayOptions = (event, reason) => {
+    if (reason === "toggle") {
+      setOpenSpeedDial(true);
+    }
+  };
+  const closeOptions = () => {
+    setOpenSpeedDial(false);
   };
 
-  const handleClose = () => {
-    setOpen(false);
-  };
-  console.log(project);
+  const [openDetails, setOpenDetails] = useState(false);
+  const [openEdit, setOpenEdit] = useState(false);
+
+  const displayDetails = () => setOpenDetails(true);
+  const closeDetails = () => setOpenDetails(false);
+
+  const displayEdit = () => setOpenEdit(true);
+  const closeEdit = () => setOpenEdit(false);
+
+  const deleteProject = () => {};
+
   return (
     <>
       <Stack style={{ backgroundColor: project.course.color.hex }} className={classes.projectBox} direction="row" justifyContent="space-between" alignItems="center" spacing={2}>
@@ -37,12 +70,24 @@ const Project = ({ project }) => {
           </Grid>
         </Grid>
 
-        <IconButton onClick={handleClickOpen}>
+        {/* <IconButton onClick={handleClickOpen}>
           <InfoIcon fontSize="large" className={classes.infoIcon} />
-        </IconButton>
+        </IconButton> */}
+        <SpeedDial
+          onOpen={displayOptions}
+          onClose={closeOptions}
+          open={openSpeedDial}
+          FabProps={{ className: classes.speedDial }}
+          ariaLabel="Options"
+          icon={<SpeedDialIcon className={classes.optionsButton} />}
+        >
+          {actions.map((action) => (
+            <SpeedDialAction onClick={action.onClick} key={action.name} icon={action.icon} tooltipTitle={action.name} />
+          ))}
+        </SpeedDial>
       </Stack>
 
-      <Dialog open={open} onClose={handleClose}>
+      <Dialog open={openDetails} onClose={closeDetails}>
         <DialogTitle>{project.name}</DialogTitle>
 
         <DialogContent>
@@ -52,9 +97,11 @@ const Project = ({ project }) => {
         </DialogContent>
 
         <DialogActions>
-          <Button onClick={handleClose}>Close</Button>
+          <Button onClick={closeDetails}>Close</Button>
         </DialogActions>
       </Dialog>
+
+      <ProjectForm open={openEdit} setOpen={setOpenEdit} currentProject={convert(project)} />
     </>
   );
 };

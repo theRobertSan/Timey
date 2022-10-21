@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Button, Grid, Typography } from "@mui/material";
 
 import useStyles from "./styles.js";
@@ -9,6 +10,13 @@ import Courses from "./Courses/Courses";
 const Sidebar = () => {
   const global = useGlobalStyles();
   const classes = useStyles();
+
+  // Controll the opening of the dialog box
+  const [open, setOpen] = useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
 
   return (
     <>
@@ -25,7 +33,10 @@ const Sidebar = () => {
         </Grid>
 
         <Grid item xs="3">
-          <ProjectForm />
+          <Button className={global.sideButton} onClick={handleClickOpen}>
+            Create Project
+          </Button>
+          <ProjectForm open={open} setOpen={setOpen} />
           <CourseForm />
         </Grid>
 
