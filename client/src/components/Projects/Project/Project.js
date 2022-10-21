@@ -6,10 +6,12 @@ import FileCopyIcon from "@mui/icons-material/FileCopyOutlined";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import ShareIcon from "@mui/icons-material/Share";
+import { useDispatch } from "react-redux";
 
 import useStyles from "./styles.js";
 import useGlobalStyles from "../../../globalStyles";
 import ProjectForm from "../../Sidebar/ProjectForm/ProjectForm.js";
+import { deleteProject } from "../../../actions/projects.js";
 
 const convert = ({ _id, name, description, course, dueDate, importance }) => ({
   _id,
@@ -25,10 +27,12 @@ const Project = ({ project }) => {
   const classes = useStyles();
   const global = useGlobalStyles();
 
+  const dispatch = useDispatch();
+
   const actions = [
     { icon: <InfoIcon />, name: "Details", onClick: () => displayDetails() },
     { icon: <EditIcon />, name: "Edit", onClick: () => displayEdit() },
-    { icon: <DeleteIcon />, name: "Delete", onClick: () => deleteProject() },
+    { icon: <DeleteIcon />, name: "Delete", onClick: () => removeProject() },
   ];
 
   const [openSpeedDial, setOpenSpeedDial] = useState(false);
@@ -50,7 +54,9 @@ const Project = ({ project }) => {
   const displayEdit = () => setOpenEdit(true);
   const closeEdit = () => setOpenEdit(false);
 
-  const deleteProject = () => {};
+  const removeProject = () => {
+    dispatch(deleteProject(project._id));
+  };
 
   return (
     <>

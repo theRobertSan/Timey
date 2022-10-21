@@ -44,3 +44,5 @@ export const updateProject = (project) => {
 };
 
 export const getProjects = () => axios.get(url);
+
+export const deleteProject = (id) => axios.delete(`${url}/${id}`);

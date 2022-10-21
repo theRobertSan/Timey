@@ -1,4 +1,4 @@
-import { GET_PROJECTS, CREATE_PROJECT, UPDATE_PROJECT } from "../constants/actionTypes";
+import { GET_PROJECTS, CREATE_PROJECT, UPDATE_PROJECT, DELETE_PROJECT } from "../constants/actionTypes";
 import * as api from "../api/projectApi";
 
 export const createProject = (project) => async (dispatch) => {
@@ -39,6 +39,23 @@ export const updateProject = (project) => async (dispatch) => {
     }
 
     dispatch({ type: UPDATE_PROJECT, payload: data });
+
+    return { success: true };
+  } catch (error) {
+    console.log(error);
+    return { success: false };
+  }
+};
+
+export const deleteProject = (id) => async (dispatch) => {
+  try {
+    const { status } = await api.deleteProject(id);
+    // Project not created
+    if (status !== 200) {
+      return { success: false };
+    }
+
+    dispatch({ type: DELETE_PROJECT, payload: id });
 
     return { success: true };
   } catch (error) {
