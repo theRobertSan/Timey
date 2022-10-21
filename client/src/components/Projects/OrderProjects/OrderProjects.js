@@ -32,7 +32,6 @@ const OrderProjects = ({ originalProjects, projects, setProjects }) => {
       default:
         sortedProjects.sort((projectA, projectB) => projectA.difficulty - projectB.difficulty);
     }
-    console.log(sortedProjects);
     setProjects(sortedProjects);
   };
 

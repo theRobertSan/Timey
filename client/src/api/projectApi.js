@@ -10,7 +10,7 @@ export const createProject = (newProject) => {
     // Join date & hour
     projectToSend = {
       ...newProject,
-      dueDate: `${moment(newProject.dueDate).format("YYYY-MM-DD")}T${moment(newProject.dueTime).format("HH:mm")}Z`,
+      dueDate: `${moment(newProject.dueDate).format("YYYY-MM-DD")}T${moment(newProject.dueTime).format("HH:mm")}`,
     };
   } else {
     projectToSend = {

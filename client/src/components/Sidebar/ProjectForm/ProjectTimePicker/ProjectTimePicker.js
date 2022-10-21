@@ -3,6 +3,7 @@ import { TimePicker } from "@mui/x-date-pickers/TimePicker";
 import moment from "moment";
 
 const ProjectTimePicker = ({ projectData, setProjectData }) => {
+  console.log(moment({ hour: 23, minute: 55 }));
   return (
     <>
       <TimePicker

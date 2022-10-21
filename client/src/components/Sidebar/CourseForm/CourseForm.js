@@ -47,7 +47,6 @@ const CourseForm = () => {
   };
 
   useEffect(() => {
-    console.log("HI");
     setCourseData({ ...courseData, color: colors[colorIndex] ? colors[colorIndex]._id : "" });
   }, [colors]);
 

@@ -12,6 +12,7 @@ import useStyles from "./styles.js";
 import useGlobalStyles from "../../../globalStyles";
 import ProjectForm from "../../Sidebar/ProjectForm/ProjectForm.js";
 import { deleteProject } from "../../../actions/projects.js";
+import CustomSnackbar from "../../CustomSnackbar/CustomSnackbar";
 
 const convert = ({ _id, name, description, course, dueDate, difficulty }) => ({
   _id,
@@ -55,7 +56,37 @@ const Project = ({ project }) => {
   const closeEdit = () => setOpenEdit(false);
 
   const removeProject = () => {
-    dispatch(deleteProject(project._id));
+    const apiResponsePromise = dispatch(deleteProject(project._id));
+
+    // Display success or error snackbar
+    apiResponsePromise.then(({ success }) => {
+      if (success) {
+        displaySuccess();
+      } else {
+        displayError();
+      }
+    });
+  };
+
+  // Controll the snackbar
+  const [snackbar, setSnackbar] = useState({
+    open: false,
+    success: false,
+  });
+
+  const displaySuccess = () => {
+    setSnackbar({ open: true, success: true });
+  };
+
+  const displayError = () => {
+    setSnackbar({ open: true, success: false });
+  };
+
+  const closeSnackbar = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setSnackbar({ ...snackbar, open: false });
   };
 
   return (
@@ -99,7 +130,7 @@ const Project = ({ project }) => {
         <DialogContent>
           <DialogContentText className={classes.infoDialog}>{project.description}</DialogContentText>
 
-          <DialogContentText>Due before {moment(project.dueDate).format("MMMM Do YYYY, h:mm a")}</DialogContentText>
+          <DialogContentText>Due before {moment(project.dueDate).format("MMMM Do YYYY, hh:mm a")}</DialogContentText>
         </DialogContent>
 
         <DialogActions>
@@ -108,6 +139,13 @@ const Project = ({ project }) => {
       </Dialog>
 
       <ProjectForm open={openEdit} setOpen={setOpenEdit} currentProject={convert(project)} />
+
+      <CustomSnackbar
+        open={snackbar.open}
+        onClose={closeSnackbar}
+        severity={snackbar.success ? "success" : "error"}
+        message={snackbar.success ? "Project deleted successfully!" : "Error deleting project. Try again later!"}
+      />
     </>
   );
 };

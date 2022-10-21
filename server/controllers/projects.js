@@ -49,7 +49,6 @@ export const updateProject = async (req, res) => {
   }
 
   const project = req.body;
-  console.log(project);
   try {
     const updatedProject = await Project.findByIdAndUpdate(id, { ...project }, { new: true }).populate({
       path: "course",
@@ -68,7 +67,6 @@ export const updateProject = async (req, res) => {
 
 export const deleteProject = async (req, res) => {
   const { id } = req.params;
-  console.log(id);
   if (!mongoose.Types.ObjectId.isValid(id)) {
     return res.status(404).send({ message: `Error: Id ${id} is invalid.` });
   }

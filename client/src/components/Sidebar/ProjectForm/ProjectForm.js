@@ -19,7 +19,7 @@ const initialProjectData = {
   description: "",
   course: "",
   dueDate: null,
-  dueTime: null,
+  dueTime: moment({ hour: 23, minute: 55 })._d,
   difficulty: 2,
 };
 
@@ -28,7 +28,6 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 });
 
 const ProjectForm = ({ open, setOpen, currentProject }) => {
-  console.log(currentProject);
   const global = useGlobalStyles();
 
   // Handle its own closure when submiting or canceling
@@ -42,7 +41,6 @@ const ProjectForm = ({ open, setOpen, currentProject }) => {
 
   // Refresh project on open
   useEffect(() => {
-    console.log("Refreshed");
     const project = currentProject ? currentProject : initialProjectData;
     setProjectData(project);
     setHover(project.difficulty);
@@ -61,7 +59,6 @@ const ProjectForm = ({ open, setOpen, currentProject }) => {
     // If time inserted exists, it's in in the future
     (projectData.dueTime === null ||
       (projectData.dueTime instanceof Date && !isNaN(projectData.dueTime) && (moment(projectData.dueDate).isAfter(new Date(), "day") || moment(projectData.dueTime).isSameOrAfter(new Date()))));
-  console.log(projectData.dueDate);
   // Controll Difficulty label
   const [hover, setHover] = useState(2);
 
