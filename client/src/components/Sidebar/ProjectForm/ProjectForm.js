@@ -1,12 +1,21 @@
 import React, { useEffect, useState } from "react";
-import { Button, Dialog, DialogTitle, DialogActions, DialogContent, Slide, Typography, Stack } from "@mui/material";
+import {
+	Button,
+	Dialog,
+	DialogTitle,
+	DialogActions,
+	DialogContent,
+	Slide,
+	Typography,
+	Stack,
+} from "@mui/material";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
 import { useDispatch } from "react-redux";
 import Difficulty from "./Difficulty/Difficulty";
 import moment from "moment";
 
-import { createProject, updateProject } from "../../../actions/projects";
+import { createProject, updateProject } from "../../../store/actions/projects";
 import CourseSelector from "./CourseSelector/CourseSelector";
 import ProjectDatePicker from "./ProjectDatePicker/ProjectDatePicker";
 import ProjectTimePicker from "./ProjectTimePicker/ProjectTimePicker";
@@ -15,151 +24,179 @@ import useGlobalStyles from "../../../globalStyles";
 import CustomSnackbar from "../../CustomSnackbar/CustomSnackbar";
 
 const initialProjectData = {
-  name: "",
-  description: "",
-  course: "",
-  dueDate: null,
-  dueTime: moment({ hour: 23, minute: 55 })._d,
-  difficulty: 2,
+	name: "",
+	description: "",
+	course: "",
+	dueDate: null,
+	dueTime: moment({ hour: 23, minute: 55 })._d,
+	difficulty: 2,
 };
 
+// Transition effect for form dialog
 const Transition = React.forwardRef(function Transition(props, ref) {
-  return <Slide direction="up" ref={ref} {...props} />;
+	return <Slide direction="up" ref={ref} {...props} />;
 });
 
-const ProjectForm = ({ open, setOpen, currentProject }) => {
-  const global = useGlobalStyles();
+const ProjectForm = ({ open, closeForm, currentProject }) => {
+	const global = useGlobalStyles();
 
-  // Handle its own closure when submiting or canceling
-  const handleClose = () => {
-    setOpen(false);
-  };
+	const dispatch = useDispatch();
 
-  const dispatch = useDispatch();
-  // Project Data
-  const [projectData, setProjectData] = useState(currentProject ? currentProject : initialProjectData);
+	// Project Data
+	const [projectData, setProjectData] = useState(
+		currentProject ? currentProject : initialProjectData
+	);
 
-  // Refresh project on open
-  useEffect(() => {
-    const project = currentProject ? currentProject : initialProjectData;
-    setProjectData(project);
-    setHover(project.difficulty);
-  }, [open]);
+	// Refresh project on open
+	useEffect(() => {
+		const project = currentProject ? currentProject : initialProjectData;
+		setProjectData(project);
+		setHover(project.difficulty);
+	}, [open]);
 
-  // console.log(moment(projectData.dueDate).isSameOrAfter(new Date(), "day"));
+	// Disable submit button based on validation
+	const isEnabled =
+		// Name exists
+		projectData.name.length > 0 &&
+		// Date inserted exists and is in the future or today
+		projectData.dueDate instanceof Date &&
+		!isNaN(projectData.dueDate) &&
+		moment(projectData.dueDate).isSameOrAfter(new Date(), "day") &&
+		// If time inserted exists, it's in in the future
+		(projectData.dueTime === null ||
+			(projectData.dueTime instanceof Date &&
+				!isNaN(projectData.dueTime) &&
+				(moment(projectData.dueDate).isAfter(new Date(), "day") ||
+					moment(projectData.dueTime).isSameOrAfter(new Date()))));
 
-  // Submit button disable based on validation
-  const isEnabled =
-    // Name exists
-    projectData.name.length > 0 &&
-    // Date inserted exists and is in the future or today
-    projectData.dueDate instanceof Date &&
-    !isNaN(projectData.dueDate) &&
-    moment(projectData.dueDate).isSameOrAfter(new Date(), "day") &&
-    // If time inserted exists, it's in in the future
-    (projectData.dueTime === null ||
-      (projectData.dueTime instanceof Date && !isNaN(projectData.dueTime) && (moment(projectData.dueDate).isAfter(new Date(), "day") || moment(projectData.dueTime).isSameOrAfter(new Date()))));
-  // Controll Difficulty label
-  const [hover, setHover] = useState(2);
+	// Controll difficulty label
+	const [hover, setHover] = useState(2);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setOpen(false);
+	// Controll the snackbar
+	const [snackbar, setSnackbar] = useState({ open: false, success: false });
 
-    let apiResponsePromise;
-    if (currentProject) {
-      // Update
-      apiResponsePromise = dispatch(updateProject(projectData));
-    } else {
-      // Create
-      apiResponsePromise = dispatch(createProject(projectData));
-    }
+	const displaySuccess = () =>
+		setSnackbar({
+			open: true,
+			success: true,
+			message: `Project ${currentProject ? "edited" : "created"} successfully!`,
+		});
+	const displayError = () => ({
+		open: true,
+		success: false,
+		message: `Error ${
+			currentProject ? "editing" : "creating"
+		} project. Try again later!`,
+	});
+	const closeSnackbar = (event, reason) => {
+		if (reason === "clickaway") {
+			return;
+		}
+		setSnackbar({ ...snackbar, open: false });
+	};
 
-    // Display success or error snackbar
-    apiResponsePromise.then(({ success }) => {
-      if (success) {
-        displaySuccess();
-      } else {
-        displayError();
-      }
-    });
+	const handleSubmit = async (e) => {
+		e.preventDefault();
+		closeForm();
 
-    // // Clean project data
-    // setProjectData(initialProjectData);
-  };
+		let apiResponsePromise;
+		if (currentProject) {
+			// Update
+			apiResponsePromise = dispatch(updateProject(projectData));
+		} else {
+			// Create
+			apiResponsePromise = dispatch(createProject(projectData));
+		}
 
-  // Controll the snackbar
-  const [snackbar, setSnackbar] = useState({
-    open: false,
-    success: false,
-  });
+		// Display success or error snackbar
+		apiResponsePromise.then(({ success }) => {
+			if (success) {
+				displaySuccess();
+			} else {
+				displayError();
+			}
+		});
+	};
 
-  const displaySuccess = () => {
-    setSnackbar({ open: true, success: true });
-  };
+	return (
+		<>
+			<Dialog
+				open={open}
+				onClose={closeForm}
+				TransitionComponent={Transition}
+				keepMounted
+			>
+				<DialogTitle variant="h5">
+					<Typography variant="inherit" align="center">
+						{currentProject ? "Edit Project" : "Create Project"}
+					</Typography>
+				</DialogTitle>
+				<form autoComplete="off" onSubmit={handleSubmit}>
+					<DialogContent>
+						<LocalizationProvider dateAdapter={AdapterMoment}>
+							<Stack spacing={2}>
+								{/* Name */}
+								<ProjectTextField
+									projectData={projectData}
+									setProjectData={setProjectData}
+									label="Name"
+									required={true}
+								/>
 
-  const displayError = () => {
-    setSnackbar({ open: true, success: false });
-  };
+								{/* Description */}
+								<ProjectTextField
+									projectData={projectData}
+									setProjectData={setProjectData}
+									label="Description"
+								/>
 
-  const closeSnackbar = (event, reason) => {
-    if (reason === "clickaway") {
-      return;
-    }
-    setSnackbar({ ...snackbar, open: false });
-  };
+								{/* Course Selection */}
+								<CourseSelector
+									projectData={projectData}
+									setProjectData={setProjectData}
+								/>
 
-  return (
-    <>
-      <Dialog open={open} onClose={handleClose} TransitionComponent={Transition} keepMounted>
-        <DialogTitle variant="h5">
-          <Typography variant="inherit" align="center">
-            {currentProject ? "Edit Project" : "Create Project"}
-          </Typography>
-        </DialogTitle>
-        <form autoComplete="off" onSubmit={handleSubmit}>
-          <DialogContent>
-            <LocalizationProvider dateAdapter={AdapterMoment}>
-              <Stack spacing={2}>
-                {/* Name */}
-                <ProjectTextField projectData={projectData} setProjectData={setProjectData} label="Name" required={true} />
+								{/* Date Selection */}
+								<ProjectDatePicker
+									projectData={projectData}
+									setProjectData={setProjectData}
+								/>
 
-                {/* Description */}
-                <ProjectTextField projectData={projectData} setProjectData={setProjectData} label="Description" />
+								{/* Time Selection */}
+								<ProjectTimePicker
+									projectData={projectData}
+									setProjectData={setProjectData}
+								/>
 
-                {/* Course Selection */}
-                <CourseSelector projectData={projectData} setProjectData={setProjectData} />
+								{/* Difficulty Selection */}
+								<Difficulty
+									projectData={projectData}
+									setProjectData={setProjectData}
+									hover={hover}
+									setHover={setHover}
+								/>
+							</Stack>
+						</LocalizationProvider>
+					</DialogContent>
+					<DialogActions>
+						<Button variant="contained" onClick={closeForm}>
+							Cancel
+						</Button>
+						<Button variant="contained" type="submit" disabled={!isEnabled}>
+							Submit
+						</Button>
+					</DialogActions>
+				</form>
+			</Dialog>
 
-                {/* Date Selection */}
-                <ProjectDatePicker projectData={projectData} setProjectData={setProjectData} />
-
-                {/* Time Selection */}
-                <ProjectTimePicker projectData={projectData} setProjectData={setProjectData} />
-
-                {/* Difficulty Selection */}
-                <Difficulty projectData={projectData} setProjectData={setProjectData} hover={hover} setHover={setHover} />
-              </Stack>
-            </LocalizationProvider>
-          </DialogContent>
-          <DialogActions>
-            <Button variant="contained" onClick={handleClose}>
-              Cancel
-            </Button>
-            <Button variant="contained" type="submit" disabled={!isEnabled}>
-              Submit
-            </Button>
-          </DialogActions>
-        </form>
-      </Dialog>
-
-      <CustomSnackbar
-        open={snackbar.open}
-        onClose={closeSnackbar}
-        severity={snackbar.success ? "success" : "error"}
-        message={snackbar.success ? `Project ${currentProject ? "edited" : "created"} successfully!` : `Error ${currentProject ? "editing" : "creating"} project. Try again later!`}
-      />
-    </>
-  );
+			<CustomSnackbar
+				open={snackbar.open}
+				onClose={closeSnackbar}
+				severity={snackbar.success ? "success" : "error"}
+				message={snackbar.message}
+			/>
+		</>
+	);
 };
 
 export default ProjectForm;
