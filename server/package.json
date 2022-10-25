@@ -9,7 +9,8 @@
     "npm": "8.15.0"
   },
   "scripts": {
-    "start": "node index.js"
+    "deploy-start": "node index.js",
+    "start": "nodemon index.js"
   },
   "author": "theRobertSan",
   "license": "ISC",

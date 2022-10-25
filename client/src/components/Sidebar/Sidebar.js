@@ -37,7 +37,7 @@ const Sidebar = () => {
           </Typography>
         </Grid>
 
-        <Grid item xs="3">
+        <Grid item xs="2">
           <Button className={global.sideButton} onClick={displayProjectForm}>
             Create Project
           </Button>
@@ -49,7 +49,7 @@ const Sidebar = () => {
           <CourseForm open={openCourseForm} closeForm={closeCourseForm} />
         </Grid>
 
-        <Grid item xs="4">
+        <Grid item xs="3">
           <Typography className={classes.coursesTitle} variant="h4">
             My Courses
           </Typography>

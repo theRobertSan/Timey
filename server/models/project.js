@@ -4,8 +4,12 @@ const projectSchema = Schema({
   name: {
     type: String,
     required: true,
+    maxLength: 30,
   },
-  description: String,
+  description: {
+    type: String,
+    maxLength: 100,
+  },
   course: {
     type: Schema.Types.ObjectId,
     ref: "Course",

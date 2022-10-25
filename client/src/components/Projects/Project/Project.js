@@ -63,10 +63,13 @@ const Project = ({ project, displaySuccess, displayError }) => {
 
   return (
     <>
-      <Stack style={{ backgroundColor: project.course.color.hex }} className={classes.projectBox} direction="row" justifyContent="space-between" alignItems="center" spacing={2}>
+      <Stack style={{ backgroundColor: project.course.color.hex }} className={classes.projectBox} direction="row" justifyContent="flex-start" alignItems="center" spacing={0}>
         <Grid container direction="column" justifyContent="space-around" alignItems="space-around">
           <Grid item>
-            {project.course.name}
+            <Typography className={classes.courseTitle} variant="body1">
+              {project.course.name}
+            </Typography>
+
             <Typography className={classes.projectTitle} variant="h4">
               {project.name}
             </Typography>
@@ -104,7 +107,7 @@ const Project = ({ project, displaySuccess, displayError }) => {
           <DialogContentText>{project.course.name}</DialogContentText>
 
           <Typography>Deadline:</Typography>
-          <DialogContentText>Due before {moment(project.dueDate).format("MMMM Do YYYY, hh:mm a")}</DialogContentText>
+          <DialogContentText>{moment(project.dueDate).format("MMMM Do YYYY, hh:mm a")}</DialogContentText>
         </DialogContent>
 
         <DialogActions>

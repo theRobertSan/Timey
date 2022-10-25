@@ -7,12 +7,23 @@ export default makeStyles({
     borderRadius: "80px",
     border: "1px solid #fff",
     height: "120px",
+    minWidth: "200px",
     color: "white",
     fontFamily: "var(--fontFamily-nunito-bold)",
+
     // backgroundColor: "#62B4FE",
+  },
+  courseTitle: {
+    fontFamily: "var(--fontFamily-nunito-bold)",
+    width: "200px",
+    overflow: "hidden",
+    textOverflow: "ellipsis",
   },
   projectTitle: {
     fontFamily: "var(--fontFamily-nunito-bold)",
+    width: "200px",
+    overflow: "hidden",
+    textOverflow: "ellipsis",
   },
   projectDueDate: {
     fontFamily: "var(--fontFamily-nunito-bold)",

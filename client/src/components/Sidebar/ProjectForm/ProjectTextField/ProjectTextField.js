@@ -1,6 +1,6 @@
 import { TextField } from "@mui/material";
 
-const ProjectTextField = ({ projectData, setProjectData, label, required }) => {
+const ProjectTextField = ({ projectData, setProjectData, label, required, limit }) => {
   return (
     <>
       <TextField
@@ -14,6 +14,7 @@ const ProjectTextField = ({ projectData, setProjectData, label, required }) => {
             [label.toLowerCase()]: e.target.value,
           })
         }
+        inputProps={{ maxLength: limit }}
       />
     </>
   );

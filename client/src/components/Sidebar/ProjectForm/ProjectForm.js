@@ -46,8 +46,9 @@ const ProjectForm = ({ open, closeForm, currentProject }) => {
 
   // Disable submit button based on validation
   const isEnabled =
-    // Name exists
+    // Name & course exists
     projectData.name.length > 0 &&
+    projectData.course.length > 0 &&
     // Date inserted exists and is in the future or today
     projectData.dueDate instanceof Date &&
     !isNaN(projectData.dueDate) &&
@@ -116,10 +117,10 @@ const ProjectForm = ({ open, closeForm, currentProject }) => {
             <LocalizationProvider dateAdapter={AdapterMoment}>
               <Stack spacing={2}>
                 {/* Name */}
-                <ProjectTextField projectData={projectData} setProjectData={setProjectData} label="Name" required={true} />
+                <ProjectTextField projectData={projectData} setProjectData={setProjectData} label="Name" required={true} limit={30} />
 
                 {/* Description */}
-                <ProjectTextField projectData={projectData} setProjectData={setProjectData} label="Description" />
+                <ProjectTextField projectData={projectData} setProjectData={setProjectData} label="Description" limit={100} />
 
                 {/* Course Selection */}
                 <CourseSelector projectData={projectData} setProjectData={setProjectData} />

@@ -12,7 +12,7 @@ const CourseSelector = ({ projectData, setProjectData }) => {
 
   return (
     <>
-      <TextField select margin="dense" label="Related Course" name="relatedCourse" value={projectData.course} onChange={(e) => setProjectData({ ...projectData, course: e.target.value })}>
+      <TextField required select margin="dense" label="Related Course" name="relatedCourse" value={projectData.course} onChange={(e) => setProjectData({ ...projectData, course: e.target.value })}>
         {coursesItems}
       </TextField>
     </>

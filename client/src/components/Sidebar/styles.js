@@ -15,6 +15,7 @@ export default makeStyles({
     height: "100%",
     backgroundColor: "#fefefe",
     margin: "0px",
+    padding: "10px",
   },
   coursesTitle: {
     color: "#1d1d1d",

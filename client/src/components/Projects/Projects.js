@@ -50,7 +50,7 @@ const Projects = () => {
   const [sortedProjects, setSortedProjects] = useState([]);
 
   const projectItems = sortedProjects?.map((project) => (
-    <Grid item xs={12} sm={6} md={6} lg={3}>
+    <Grid item xs={12} sm={6} md={6} lg={4} xl={3}>
       <Project project={project} displaySuccess={displaySuccess} displayError={displayError}></Project>
     </Grid>
   ));
@@ -87,7 +87,7 @@ const Projects = () => {
         </Typography>
         <OrderProjects originalProjects={projects} projects={sortedProjects} setProjects={setSortedProjects} />
       </Stack>
-      <Grid container justifyContent="flex-start" alignItems="center" rowSpacing={3} columnSpacing={{ xs: 1, sm: 2, md: 5 }}>
+      <Grid container justifyContent="flex-start" alignItems="center" rowSpacing={4} columnSpacing={{ xs: 1, sm: 2, md: 5 }}>
         {projectItems}
       </Grid>
 

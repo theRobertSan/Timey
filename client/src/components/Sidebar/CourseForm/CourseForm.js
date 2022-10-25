@@ -100,7 +100,16 @@ const CourseForm = ({ open, closeForm }) => {
           <DialogContent>
             <Stack spacing={2}>
               {/* Name */}
-              <TextField autoFocus fullWidth required label="Name" name="name" value={courseData.name} onChange={(e) => setCourseData({ ...courseData, name: e.target.value })} />
+              <TextField
+                autoFocus
+                fullWidth
+                required
+                label="Name"
+                name="name"
+                value={courseData.name}
+                onChange={(e) => setCourseData({ ...courseData, name: e.target.value })}
+                inputProps={{ maxLength: 30 }}
+              />
 
               <Stack direction="row" justifyContent="flex-star" alignItems="center" spacing={1}>
                 <Button variant="colorButton" onClick={changeColor}>
