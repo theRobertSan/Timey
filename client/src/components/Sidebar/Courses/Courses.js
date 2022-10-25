@@ -1,4 +1,4 @@
-import { ListItem, ListItemButton, ListItemText } from "@mui/material";
+import { ListItem } from "@mui/material";
 import { useSelector } from "react-redux";
 import { FixedSizeList } from "react-window";
 import CircleIcon from "@mui/icons-material/Circle";

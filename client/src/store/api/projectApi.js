@@ -1,7 +1,7 @@
 import axios from "axios";
 import moment from "moment";
 
-const url = "http://localhost:5000/projects";
+const url = "https://timey-server.herokuapp.com/projects";
 
 export const createProject = (newProject) => {
   let projectToSend;
@@ -18,7 +18,6 @@ export const createProject = (newProject) => {
       dueDate: `${moment(newProject.dueDate).format("YYYY-MM-DD")}Z`,
     };
   }
-  console.log(newProject);
   delete projectToSend.dueTime;
   return axios.post(url, projectToSend);
 };

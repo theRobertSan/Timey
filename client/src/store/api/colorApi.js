@@ -1,5 +1,5 @@
 import axios from "axios";
 
-const url = "http://localhost:5000/colors";
+const url = "https://timey-server.herokuapp.com/colors";
 
 export const getColors = () => axios.get(url);

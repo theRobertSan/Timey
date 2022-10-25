@@ -11,7 +11,6 @@ import CourseSelector from "./CourseSelector/CourseSelector";
 import ProjectDatePicker from "./ProjectDatePicker/ProjectDatePicker";
 import ProjectTimePicker from "./ProjectTimePicker/ProjectTimePicker";
 import ProjectTextField from "./ProjectTextField/ProjectTextField";
-import useGlobalStyles from "../../../globalStyles";
 import CustomSnackbar from "../../CustomSnackbar/CustomSnackbar";
 import useStyles from "./styles.js";
 
@@ -30,7 +29,6 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 });
 
 const ProjectForm = ({ open, closeForm, currentProject }) => {
-  const global = useGlobalStyles();
   const classes = useStyles();
 
   const dispatch = useDispatch();
@@ -43,6 +41,7 @@ const ProjectForm = ({ open, closeForm, currentProject }) => {
     const project = currentProject ? currentProject : initialProjectData;
     setProjectData(project);
     setHover(project.difficulty);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [open]);
 
   // Disable submit button based on validation

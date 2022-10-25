@@ -1,18 +1,14 @@
 import React, { useState } from "react";
-import { SpeedDialIcon, SpeedDial, SpeedDialAction, Typography, Grid, Divider, IconButton, Stack, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Button } from "@mui/material";
+import { SpeedDialIcon, SpeedDial, SpeedDialAction, Typography, Grid, Stack, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Button } from "@mui/material";
 import InfoIcon from "@mui/icons-material/Info";
 import moment from "moment";
-import FileCopyIcon from "@mui/icons-material/FileCopyOutlined";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
-import ShareIcon from "@mui/icons-material/Share";
 import { useDispatch } from "react-redux";
 
 import useStyles from "./styles.js";
-import useGlobalStyles from "../../../globalStyles";
 import ProjectForm from "../../Sidebar/ProjectForm/ProjectForm.js";
 import { deleteProject } from "../../../store/actions/projects.js";
-import CustomSnackbar from "../../CustomSnackbar/CustomSnackbar";
 
 const convert = ({ _id, name, description, course, dueDate, difficulty }) => ({
   _id,
@@ -26,7 +22,6 @@ const convert = ({ _id, name, description, course, dueDate, difficulty }) => ({
 
 const Project = ({ project, displaySuccess, displayError }) => {
   const classes = useStyles();
-  const global = useGlobalStyles();
 
   const dispatch = useDispatch();
 

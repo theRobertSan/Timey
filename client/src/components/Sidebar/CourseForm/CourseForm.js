@@ -4,7 +4,6 @@ import { Dialog, Button, Slide, DialogTitle, Typography, DialogContent, Stack, T
 import { useDispatch } from "react-redux";
 import CircleIcon from "@mui/icons-material/Circle";
 import { createCourse } from "../../../store/actions/courses";
-import useGlobalStyles from "../../../globalStyles";
 import { useEffect } from "react";
 import CustomSnackbar from "../../CustomSnackbar/CustomSnackbar";
 
@@ -19,8 +18,6 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 });
 
 const CourseForm = ({ open, closeForm }) => {
-  const global = useGlobalStyles();
-
   const dispatch = useDispatch();
 
   // Course Data
@@ -46,6 +43,7 @@ const CourseForm = ({ open, closeForm }) => {
       ...initialCourseData,
       color: colors.length ? colors[colorIndex]._id : "",
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [colors]);
 
   // Controll the snackbar

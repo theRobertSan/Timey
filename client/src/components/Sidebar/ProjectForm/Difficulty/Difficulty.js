@@ -1,6 +1,5 @@
 import { Typography, Divider, Rating, Box, Stack, styled } from "@mui/material";
 import FmdBadIcon from "@mui/icons-material/FmdBad";
-import { useState } from "react";
 
 const StyledRating = styled(Rating)({
   "& .MuiRating-iconFilled": {

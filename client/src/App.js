@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { Grid, StyledEngineProvider, createTheme, ThemeProvider } from "@mui/material";
+import { Grid, StyledEngineProvider } from "@mui/material";
 
 import Sidebar from "./components/Sidebar/Sidebar";
 import { getCourses } from "./store/actions/courses";

@@ -1,12 +1,11 @@
 import { useEffect, useState } from "react";
-import { Grid, Stack, Typography, LinearProgress } from "@mui/material";
+import { Grid, Stack, Typography } from "@mui/material";
 import { useSelector } from "react-redux";
 import moment from "moment";
 import { useDispatch } from "react-redux";
 
 import Project from "./Project/Project";
 import useStyles from "./styles.js";
-import useGlobalStyles from "../../globalStyles";
 import OrderProjects from "./OrderProjects/OrderProjects";
 import CustomSnackbar from "../CustomSnackbar/CustomSnackbar";
 import { deleteProject } from "../../store/actions/projects";
@@ -18,7 +17,6 @@ const typeSeverity = {
 };
 
 const Projects = () => {
-  const global = useGlobalStyles();
   const classes = useStyles();
 
   const dispatch = useDispatch();
@@ -72,13 +70,13 @@ const Projects = () => {
         toDeleteIds.push(project._id);
       }
     });
-    console.log(message);
     // There was at least one expired project, display info snackbar
     if (expiredProjectsExist) {
       displayInfo(message);
     }
 
     toDeleteIds.forEach((id) => dispatch(deleteProject(id)));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loadedData]);
 
   return (
