@@ -87,7 +87,7 @@ const Projects = () => {
         </Typography>
         <OrderProjects originalProjects={projects} projects={sortedProjects} setProjects={setSortedProjects} />
       </Stack>
-      <Grid container justifyContent="flex-start" alignItems="center" rowSpacing={4} columnSpacing={{ xs: 1, sm: 2, md: 5 }}>
+      <Grid container justifyContent="flex-start" alignItems="center" rowSpacing={4} columnSpacing={{ xs: 2, sm: 4, md: 5, lg: 10 }}>
         {projectItems}
       </Grid>
 

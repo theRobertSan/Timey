@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Button, Grid, Typography, Stack } from "@mui/material";
+import { Button, Typography, Stack } from "@mui/material";
 
 import useStyles from "./styles.js";
 import useGlobalStyles from "../../globalStyles";
@@ -52,6 +52,10 @@ const Sidebar = () => {
         <Button className={global.sideButton} href="https://github.com/theRobertSan/Timey">
           Code on GitHub
         </Button>
+        <div className={classes.madeBy}>
+          <Typography variant="body2">Made By</Typography>
+          <Typography variant="body1">Robert Morosan</Typography>
+        </div>
       </Stack>
     </>
   );

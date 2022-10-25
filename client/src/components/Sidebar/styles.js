@@ -16,10 +16,14 @@ export default makeStyles({
     height: "100%",
     backgroundColor: "#fefefe",
     margin: "0px",
-    padding: "15px",
+    padding: "0 15px 0 15px",
   },
   coursesTitle: {
     color: "#1d1d1d",
     fontFamily: "var(--fontFamily-nunito-bold)",
+  },
+  madeBy: {
+    textAlign: "center",
+    padding: "10px",
   },
 });

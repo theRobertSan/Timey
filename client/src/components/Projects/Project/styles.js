@@ -6,8 +6,8 @@ export default makeStyles({
     margin: "0px",
     borderRadius: "80px",
     border: "1px solid #fff",
-    height: "120px",
-    minWidth: "200px",
+    height: "150px",
+    minWidth: "250px",
     color: "white",
     fontFamily: "var(--fontFamily-nunito-bold)",
 
@@ -15,13 +15,13 @@ export default makeStyles({
   },
   courseTitle: {
     fontFamily: "var(--fontFamily-nunito-bold)",
-    width: "200px",
+    width: "220px",
     overflow: "hidden",
     textOverflow: "ellipsis",
   },
   projectTitle: {
     fontFamily: "var(--fontFamily-nunito-bold)",
-    width: "200px",
+    width: "220px",
     overflow: "hidden",
     textOverflow: "ellipsis",
   },

@@ -5,6 +5,7 @@ import moment from "moment";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useDispatch } from "react-redux";
+import WarningAmberIcon from "@mui/icons-material/WarningAmber";
 
 import useStyles from "./styles.js";
 import ProjectForm from "../../Sidebar/ProjectForm/ProjectForm.js";
@@ -19,6 +20,13 @@ const convert = ({ _id, name, description, course, dueDate, difficulty }) => ({
   dueTime: new Date(dueDate),
   difficulty,
 });
+
+const difficultyLabels = {
+  1: "Easy",
+  2: "Average",
+  3: "Hard",
+  4: "Very Hard",
+};
 
 const Project = ({ project, displaySuccess, displayError }) => {
   const classes = useStyles();
@@ -71,6 +79,8 @@ const Project = ({ project, displaySuccess, displayError }) => {
             </Typography>
 
             <Typography className={classes.projectTitle} variant="h4">
+              {project.difficulty === 4 && <WarningAmberIcon />}
+              {project.difficulty === 4 && " "}
               {project.name}
             </Typography>
           </Grid>
@@ -101,12 +111,15 @@ const Project = ({ project, displaySuccess, displayError }) => {
 
         <DialogContent>
           <Typography>Description:</Typography>
-          <DialogContentText>{project.description}</DialogContentText>
+          <DialogContentText>{project.description ? project.description : "None"}</DialogContentText>
 
           <Typography>Course:</Typography>
           <DialogContentText>{project.course.name}</DialogContentText>
 
-          <Typography>Deadline:</Typography>
+          <Typography>Difficulty:</Typography>
+          <DialogContentText>{difficultyLabels[project.difficulty]}</DialogContentText>
+
+          <Typography>Deadline</Typography>
           <DialogContentText>{moment(project.dueDate).format("MMMM Do YYYY, hh:mm a")}</DialogContentText>
         </DialogContent>
 
