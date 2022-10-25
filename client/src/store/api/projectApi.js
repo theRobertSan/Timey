@@ -18,7 +18,7 @@ export const createProject = (newProject) => {
       dueDate: `${moment(newProject.dueDate).format("YYYY-MM-DD")}Z`,
     };
   }
-
+  console.log(newProject);
   delete projectToSend.dueTime;
   return axios.post(url, projectToSend);
 };

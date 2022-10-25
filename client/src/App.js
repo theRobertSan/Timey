@@ -1,11 +1,6 @@
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import {
-	Grid,
-	StyledEngineProvider,
-	createTheme,
-	ThemeProvider,
-} from "@mui/material";
+import { Grid, StyledEngineProvider, createTheme, ThemeProvider } from "@mui/material";
 
 import Sidebar from "./components/Sidebar/Sidebar";
 import { getCourses } from "./store/actions/courses";
@@ -14,44 +9,31 @@ import { getProjects } from "./store/actions/projects";
 import { getColors } from "./store/actions/colors";
 import useGlobalStyles from "./globalStyles";
 
-const theme = createTheme({
-	palette: {
-		primary: {
-			main: "#FF9398",
-		},
-		secondary: {
-			main: "#FF9398",
-		},
-	},
-});
-
 const App = () => {
-	const global = useGlobalStyles();
+  const global = useGlobalStyles();
 
-	const dispatch = useDispatch();
+  const dispatch = useDispatch();
 
-	useEffect(() => {
-		dispatch(getCourses());
-		dispatch(getProjects());
-		dispatch(getColors());
-	}, [dispatch]);
+  useEffect(() => {
+    dispatch(getCourses());
+    dispatch(getProjects());
+    dispatch(getColors());
+  }, [dispatch]);
 
-	return (
-		<>
-			<ThemeProvider theme={theme}>
-				<StyledEngineProvider injectFirst>
-					<Grid container direction="row" className={global.home}>
-						<Grid item xs>
-							<Sidebar />
-						</Grid>
-						<Grid item xs="10">
-							<Projects />
-						</Grid>
-					</Grid>
-				</StyledEngineProvider>
-			</ThemeProvider>
-		</>
-	);
+  return (
+    <>
+      <StyledEngineProvider injectFirst>
+        <Grid container direction={{ xs: "column", sm: "column", md: "row", lg: "row" }} className={global.home}>
+          <Grid item xs={2}>
+            <Sidebar />
+          </Grid>
+          <Grid item xs>
+            <Projects />
+          </Grid>
+        </Grid>
+      </StyledEngineProvider>
+    </>
+  );
 };
 
 export default App;
