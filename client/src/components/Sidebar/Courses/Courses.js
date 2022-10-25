@@ -22,7 +22,7 @@ const Courses = () => {
 
   return (
     <>
-      <FixedSizeList className={classes.list} height={150} width={250} itemSize={50} itemCount={courses.length} overscanCount={5}>
+      <FixedSizeList className={classes.list} height={200} width={250} itemSize={50} itemCount={courses.length} overscanCount={5}>
         {renderRow}
       </FixedSizeList>
     </>

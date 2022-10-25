@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Button, Grid, Typography } from "@mui/material";
+import { Button, Grid, Typography, Stack } from "@mui/material";
 
 import useStyles from "./styles.js";
 import useGlobalStyles from "../../globalStyles";
@@ -25,43 +25,34 @@ const Sidebar = () => {
 
   return (
     <>
-      <Grid className={classes.sideBar} container direction="column" justifyContent="center" alignItems="center">
-        <Grid item xs="1">
+      <Stack className={classes.sideBar} container direction="column" justifyContent="flex-start" spacing={4} alignItems="center">
+        <div>
           <Typography className={classes.title} variant="h2">
             Timey
           </Typography>
-        </Grid>
-        <Grid item xs="1">
           <Typography className={classes.subtitle} variant="body2">
             Never lose track
           </Typography>
-        </Grid>
+        </div>
+        <Button className={global.sideButton} onClick={displayProjectForm}>
+          Create Project
+        </Button>
+        <ProjectForm open={openProjectForm} closeForm={closeProjectForm} />
 
-        <Grid item xs="2">
-          <Button className={global.sideButton} onClick={displayProjectForm}>
-            Create Project
-          </Button>
-          <ProjectForm open={openProjectForm} closeForm={closeProjectForm} />
+        <Button className={global.sideButton} onClick={displayCourseForm}>
+          Add Course
+        </Button>
+        <CourseForm open={openCourseForm} closeForm={closeCourseForm} />
 
-          <Button className={global.sideButton} onClick={displayCourseForm}>
-            Add Course
-          </Button>
-          <CourseForm open={openCourseForm} closeForm={closeCourseForm} />
-        </Grid>
+        <Typography className={classes.coursesTitle} variant="h4">
+          My Courses
+        </Typography>
+        <Courses />
 
-        <Grid item xs="3">
-          <Typography className={classes.coursesTitle} variant="h4">
-            My Courses
-          </Typography>
-          <Courses />
-        </Grid>
-
-        <Grid item xs="2">
-          <Button className={global.sideButton} href="https://github.com/theRobertSan/Timey">
-            Code on GitHub
-          </Button>
-        </Grid>
-      </Grid>
+        <Button className={global.sideButton} href="https://github.com/theRobertSan/Timey">
+          Code on GitHub
+        </Button>
+      </Stack>
     </>
   );
 };
