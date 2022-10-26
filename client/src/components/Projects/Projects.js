@@ -3,6 +3,7 @@ import { Grid, Stack, Typography } from "@mui/material";
 import { useSelector } from "react-redux";
 import moment from "moment";
 import { useDispatch } from "react-redux";
+import CircularProgress from "@mui/material/CircularProgress";
 
 import Project from "./Project/Project";
 import useStyles from "./styles.js";
@@ -45,7 +46,6 @@ const Projects = () => {
   };
 
   const { projects, loadedData } = useSelector((state) => state.projects);
-
   // Sorted projects which will be displayed
   const [sortedProjects, setSortedProjects] = useState([]);
 
@@ -87,6 +87,7 @@ const Projects = () => {
         </Typography>
         <OrderProjects originalProjects={projects} projects={sortedProjects} setProjects={setSortedProjects} />
       </Stack>
+      {!projects.length && <CircularProgress />}
       <Grid container justifyContent="flex-start" alignItems="center" rowSpacing={4} columnSpacing={{ xs: 2, sm: 4, md: 5, lg: 5 }}>
         {projectItems}
       </Grid>

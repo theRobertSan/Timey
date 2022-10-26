@@ -2,6 +2,7 @@ import { ListItem } from "@mui/material";
 import { useSelector } from "react-redux";
 import { FixedSizeList } from "react-window";
 import CircleIcon from "@mui/icons-material/Circle";
+import CircularProgress from "@mui/material/CircularProgress";
 
 import useStyles from "./styles.js";
 
@@ -22,6 +23,7 @@ const Courses = () => {
 
   return (
     <>
+      {!courses.length && <CircularProgress />}
       <FixedSizeList className={classes.list} height={200} width={250} itemSize={50} itemCount={courses.length} overscanCount={5}>
         {renderRow}
       </FixedSizeList>
