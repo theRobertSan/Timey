@@ -18,7 +18,7 @@ export default makeStyles((theme) => ({
     "&:before": {
       content: '""',
       position: "absolute",
-      height: "150px",
+      height: "200px",
       width: "50px",
       background: "#fefefe",
       left: "-55px",

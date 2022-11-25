@@ -40,12 +40,24 @@ const Project = ({ project, displaySuccess, displayError }) => {
   ];
 
   const [openSpeedDial, setOpenSpeedDial] = useState(false);
+  const [closeSpeedDialTimer, setCloseSpeedDialTimer] = useState(0);
 
-  const closeOptions = () => setOpenSpeedDial(false);
+  const closeOptions = (event, reason) => {
+    if (reason === "toggle") {
+      setOpenSpeedDial(false);
+    } else {
+      setCloseSpeedDialTimer(setTimeout(() => setOpenSpeedDial(false), 2000));
+    }
+  };
   const displayOptions = (event, reason) => {
     if (reason === "toggle") {
+      clearTimeout(closeSpeedDialTimer);
       setOpenSpeedDial(true);
     }
+  };
+
+  const resetTimer = () => {
+    clearTimeout(closeSpeedDialTimer);
   };
 
   const [openDetails, setOpenDetails] = useState(false);
@@ -95,6 +107,7 @@ const Project = ({ project, displaySuccess, displayError }) => {
         <SpeedDial
           onOpen={displayOptions}
           onClose={closeOptions}
+          onMouseEnter={resetTimer}
           open={openSpeedDial}
           FabProps={{ className: classes.speedDial }}
           ariaLabel="Options"
