@@ -1,7 +1,7 @@
 import axios from "axios";
 import moment from "moment";
 
-const url = "https://timey-server.herokuapp.com/projects";
+const url = "https://timey-server.onrender.com/projects";
 
 export const createProject = (newProject) => {
   let projectToSend;
